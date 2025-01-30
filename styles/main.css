@@ -1,0 +1,25 @@
+/* Hacker-themed animations */
+.neon-text {
+    animation: neonGlow 1.5s ease-in-out infinite alternate;
+}
+
+@keyframes neonGlow {
+    from { text-shadow: 0 0 5px #22c55e, 0 0 10px #22c55e; }
+    to { text-shadow: 0 0 20px #22c55e, 0 0 30px #22c55e; }
+}
+
+.skill-card:hover {
+    transform: translateY(-5px);
+    transition: all 0.3s ease;
+}
+
+/* Terminal-like scrollbar */
+::-webkit-scrollbar {
+    width: 8px;
+    background: #1a1a1a;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #22c55e;
+    border-radius: 4px;
+}
