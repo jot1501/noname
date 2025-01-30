@@ -1,202 +1,224 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CyberSec HQ</title>
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <!-- Previous head content remains -->
     <style>
-        .matrix-bg {
-            background: rgba(0, 0, 0, 0.95);
-            position: relative;
-            overflow: hidden;
+        /* Add to existing styles */
+        .hacker-modal {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: #000;
+            border: 2px solid #0f0;
+            padding: 2rem;
+            z-index: 1000;
         }
-        .scan-line {
+        
+        .data-leak {
             position: absolute;
-            height: 2px;
-            background: linear-gradient(to bottom, transparent 0%, #0f0 50%, transparent 100%);
-            animation: scan 4s linear infinite;
-        }
-        @keyframes scan {
-            0% { top: -100%; }
-            100% { top: 100%; }
+            background: rgba(255,0,0,0.1);
+            padding: 0.5rem;
+            border: 1px dashed red;
+            cursor: pointer;
         }
     </style>
 </head>
 <body class="matrix-bg text-green-500 font-mono">
-    <!-- Terminal Interface -->
-    <div class="container mx-auto px-4 py-8">
-        <div class="terminal-window bg-black p-6 rounded-lg shadow-2xl">
-            <div class="terminal-header flex items-center mb-4">
-                <div class="flex space-x-2">
-                    <div class="w-3 h-3 rounded-full bg-red-500"></div>
-                    <div class="w-3 h-3 rounded-full bg-yellow-500"></div>
-                    <div class="w-3 h-3 rounded-full bg-green-500"></div>
-                </div>
-            </div>
-            <div id="terminal-output" class="h-96 overflow-y-auto mb-4">
-                <p>> Initializing CyberSec Interface...</p>
-                <p>> Loading threat database... <span id="load-progress">0%</span></p>
-            </div>
-            <div class="terminal-input flex items-center">
-                <span class="mr-2">$></span>
-                <input type="text" id="command-input" 
-                       class="flex-1 bg-transparent border-none focus:outline-none text-green-500"
-                       placeholder="Enter command (try 'help')">
-            </div>
-        </div>
-    </div>
+    <!-- Add these new interactive sections -->
 
-    <!-- Live Attack Map -->
-    <div class="container mx-auto px-4 py-8">
-        <canvas id="attack-map" class="w-full h-96 bg-black rounded-lg"></canvas>
-    </div>
-
-    <!-- Password Cracking Simulator -->
+    <!-- Live Malware Analysis Sandbox -->
     <div class="container mx-auto px-4 py-8">
         <div class="bg-black p-6 rounded-lg">
-            <h2 class="text-2xl mb-4">Password Strength Tester</h2>
-            <input type="text" id="password-input" 
-                   class="w-full bg-gray-900 p-3 rounded mb-4" 
-                   placeholder="Enter password to test">
-            <div class="h-2 bg-gray-800 rounded mb-4">
-                <div id="strength-meter" class="h-2 bg-green-500 rounded transition-all"></div>
+            <h2 class="text-2xl mb-4">Malware Analysis Sandbox</h2>
+            <div id="sandbox" class="h-64 bg-gray-900 rounded-lg relative overflow-hidden">
+                <div id="malware-file" class="data-leak" style="top: 30%; left: 20%">financial_data.xls</div>
+                <div id="registry-key" class="data-leak" style="top: 60%; left: 70%">HKLM\System</div>
             </div>
-            <p id="crack-time" class="text-sm">Estimated crack time: <span class="text-red-500">Instant</span></p>
+            <div class="mt-4 grid grid-cols-3 gap-4">
+                <button onclick="analyzeMalware()" class="bg-red-500 hover:bg-red-600 p-2 rounded">
+                    Execute Malware
+                </button>
+                <button onclick="quarantineFiles()" class="bg-yellow-500 hover:bg-yellow-600 p-2 rounded">
+                    Quarantine Files
+                </button>
+                <button onclick="dumpMemory()" class="bg-blue-500 hover:bg-blue-600 p-2 rounded">
+                    Dump Memory
+                </button>
+            </div>
         </div>
+    </div>
+
+    <!-- Cryptography Challenge -->
+    <div class="container mx-auto px-4 py-8">
+        <div class="bg-black p-6 rounded-lg">
+            <h2 class="text-2xl mb-4">Decrypt the Message</h2>
+            <p class="mb-4" id="ciphertext">4A61766153637269707420697320617765736F6D65</p>
+            <select id="cipher-type" class="bg-gray-900 p-2 rounded mb-4">
+                <option value="hex">Hexadecimal</option>
+                <option value="base64">Base64</option>
+                <option value="rot13">ROT13</option>
+            </select>
+            <input type="text" id="decrypted-text" 
+                   class="w-full bg-gray-900 p-3 rounded mb-4" 
+                   placeholder="Enter decrypted message">
+            <button onclick="checkDecryption()" class="bg-green-600 hover:bg-green-700 px-4 py-2 rounded">
+                Validate Decryption
+            </button>
+        </div>
+    </div>
+
+    <!-- Social Engineering Simulator -->
+    <div class="container mx-auto px-4 py-8">
+        <div class="bg-black p-6 rounded-lg">
+            <h2 class="text-2xl mb-4">Phishing Simulation</h2>
+            <div class="email-frame bg-gray-900 p-4 rounded mb-4">
+                <div class="email-header mb-4">
+                    <p>From: security@yourbank.com</p>
+                    <p>Subject: Urgent: Account Verification Required</p>
+                </div>
+                <div class="email-body">
+                    <p>Dear User,</p>
+                    <p>Click the link below to verify your account:</p>
+                    <a href="#" onclick="handlePhishingClick(event)" 
+                       class="text-blue-400 hover:text-blue-300">https://yourbank-verify.com</a>
+                </div>
+            </div>
+            <p id="phishing-result" class="text-sm"></p>
+        </div>
+    </div>
+
+    <!-- Hacker Typer Mode -->
+    <div class="hacker-modal" id="hackerModal">
+        <h3 class="text-xl mb-4">Root Access Granted</h3>
+        <div id="modal-content"></div>
+        <button onclick="closeModal()" class="mt-4 bg-red-500 hover:bg-red-600 px-4 py-2 rounded">
+            Close Connection
+        </button>
     </div>
 
     <script>
-        // Terminal Simulation
-        const commands = {
-            help: "Available commands: clear, scan <ip>, decrypt <hash>, ddos",
-            scan: (ip) => `Scanning ${ip}...\nPort 22: Open\nPort 80: Open\nVulnerabilities Found: 3`,
-            decrypt: (hash) => `Decrypting ${hash}...\nResult: Password123!`,
-            ddos: () => {
-                startDDoSSimulation();
-                return "Initiating DDoS simulation... Check attack map!";
+        // Add these new interactive functions
+
+        // Malware Analysis Simulation
+        let isMalwareExecuted = false;
+
+        function analyzeMalware() {
+            if(!isMalwareExecuted) {
+                document.querySelectorAll('.data-leak').forEach(file => {
+                    file.style.backgroundColor = 'rgba(255,0,0,0.3)';
+                    file.innerHTML += ' 🔓';
+                });
+                showModal("Malware executed!<br>Data leaks detected in system!");
+                isMalwareExecuted = true;
+                unlockAchievement('malware-executed');
             }
+        }
+
+        function quarantineFiles() {
+            document.querySelectorAll('.data-leak').forEach(file => {
+                file.style.backgroundColor = 'rgba(0,255,0,0.1)';
+                file.innerHTML = file.textContent.replace('🔓', '🔒');
+            });
+            showModal("Files quarantined!<br>System secured.");
+        }
+
+        // Cryptography Challenge
+        function checkDecryption() {
+            const cipherType = document.getElementById('cipher-type').value;
+            const userInput = document.getElementById('decrypted-text').value.toLowerCase();
+            let solution;
+
+            switch(cipherType) {
+                case 'hex':
+                    solution = hexToString(document.getElementById('ciphertext').textContent);
+                    break;
+                case 'base64':
+                    solution = atob("SmF2YVNjcmlwdCBpcyBhd2Vzb21l");
+                    break;
+                case 'rot13':
+                    solution = rot13("JavaScript is awesome");
+                    break;
+            }
+
+            if(userInput === solution.toLowerCase()) {
+                showModal("Decryption successful!<br>Flag: FLAG{CRYPTO_MASTER}");
+                unlockAchievement('crypto-cracked');
+            } else {
+                showModal("Decryption failed!<br>Keep trying!");
+            }
+        }
+
+        function hexToString(hex) {
+            let str = '';
+            for (let i = 0; i < hex.length; i += 2) {
+                str += String.fromCharCode(parseInt(hex.substr(i, 2), 16));
+            }
+            return str;
+        }
+
+        function rot13(str) {
+            return str.replace(/[a-zA-Z]/g, function(c) {
+                return String.fromCharCode((c <= "Z" ? 90 : 122) >= (c = c.charCodeAt(0) + 13) 
+                    ? c : c - 26);
+            });
+        }
+
+        // Phishing Simulation
+        function handlePhishingClick(e) {
+            e.preventDefault();
+            if(Math.random() > 0.5) {
+                document.getElementById('phishing-result').innerHTML = 
+                    '❌ Dangerous link clicked! Credentials compromised!';
+                showModal("Phishing successful!<br>User credentials captured!");
+                unlockAchievement('phish-clicked');
+            } else {
+                document.getElementById('phishing-result').innerHTML = 
+                    '✅ Smart choice! You avoided the phishing attempt!';
+                unlockAchievement('phish-avoided');
+            }
+        }
+
+        // Achievement System
+        const achievements = {
+            'malware-executed': { name: 'Malware Execution', badge: '🦠' },
+            'crypto-cracked': { name: 'Crypto Expert', badge: '🔐' },
+            'phish-clicked': { name: 'Phish Food', badge: '🎣' },
+            'phish-avoided': { name: 'Phish Fighter', badge: '🛡️' }
         };
 
-        document.getElementById('command-input').addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') {
-                const input = e.target.value.trim().toLowerCase().split(' ');
-                const output = document.getElementById('terminal-output');
-                
-                output.innerHTML += `<p>$> ${e.target.value}</p>`;
-                
-                if (commands[input[0]]) {
-                    const response = typeof commands[input[0]] === 'function' 
-                        ? commands[input[0]](input[1])
-                        : commands[input[0]];
-                    output.innerHTML += `<p>${response}</p>`;
-                } else {
-                    output.innerHTML += `<p>Command not found. Type 'help' for options</p>`;
-                }
-                
-                e.target.value = '';
-                output.scrollTop = output.scrollHeight;
+        function unlockAchievement(id) {
+            const achievement = achievements[id];
+            showModal(`Achievement Unlocked: ${achievement.badge} ${achievement.name}`);
+            // Add to localStorage for persistence
+            localStorage.setItem(id, 'unlocked');
+        }
+
+        // Modal System
+        function showModal(content) {
+            document.getElementById('modal-content').innerHTML = content;
+            document.getElementById('hackerModal').style.display = 'block';
+        }
+
+        function closeModal() {
+            document.getElementById('hackerModal').style.display = 'none';
+        }
+
+        // Initialize dynamic elements
+        document.addEventListener('click', function(e) {
+            if(e.target.classList.contains('data-leak')) {
+                showModal(`Data leak accessed: ${e.target.textContent}<br>
+                         ${Math.random().toString(16).substr(2, 8)}.exe downloaded`);
             }
         });
 
-        // Password Strength Calculator
-        document.getElementById('password-input').addEventListener('input', (e) => {
-            const password = e.target.value;
-            const strength = calculatePasswordStrength(password);
-            document.getElementById('strength-meter').style.width = `${strength}%`;
-            document.getElementById('crack-time').innerHTML = 
-                `Estimated crack time: <span class="text-red-500">${calculateCrackTime(password)}</span>`;
+        // Add keyboard shortcuts
+        document.addEventListener('keydown', (e) => {
+            if(e.ctrlKey && e.key === 'l') { // Ctrl+L to clear
+                document.getElementById('terminal-output').innerHTML = '';
+            }
         });
-
-        function calculatePasswordStrength(pass) {
-            const length = Math.min(pass.length * 3, 25);
-            const complexity = (/[A-Z]/.test(pass) ? 15 : 0) + 
-                             (/[0-9]/.test(pass) ? 15 : 0) + 
-                             (/[^A-Za-z0-9]/.test(pass) ? 20 : 0);
-            return Math.min(length + complexity, 100);
-        }
-
-        function calculateCrackTime(pass) {
-            const entropy = pass.length * 4;
-            const time = Math.pow(2, entropy) / (1e12 * 1000);
-            return time < 1 ? 'Instant' : `${Math.round(time)} years`;
-        }
-
-        // Attack Map Visualization
-        const canvas = document.getElementById('attack-map');
-        const ctx = canvas.getContext('2d');
-        let nodes = [];
-
-        class AttackNode {
-            constructor() {
-                this.x = Math.random() * canvas.width;
-                this.y = Math.random() * canvas.height;
-                this.connections = [];
-            }
-            
-            draw() {
-                ctx.beginPath();
-                ctx.arc(this.x, this.y, 3, 0, Math.PI * 2);
-                ctx.fillStyle = '#0f0';
-                ctx.fill();
-                
-                this.connections.forEach(target => {
-                    ctx.beginPath();
-                    ctx.moveTo(this.x, this.y);
-                    ctx.lineTo(target.x, target.y);
-                    ctx.strokeStyle = 'rgba(0, 255, 0, 0.2)';
-                    ctx.stroke();
-                });
-            }
-        }
-
-        function initAttackMap() {
-            canvas.width = canvas.offsetWidth;
-            canvas.height = canvas.offsetHeight;
-            
-            // Create network nodes
-            for(let i = 0; i < 50; i++) {
-                nodes.push(new AttackNode());
-            }
-            
-            // Create random connections
-            nodes.forEach(node => {
-                node.connections = nodes.filter(() => Math.random() > 0.95);
-            });
-            
-            animate();
-        }
-
-        function animate() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            
-            // Simulate attacks
-            if(Math.random() > 0.95) {
-                const attacker = nodes[Math.floor(Math.random() * nodes.length)];
-                const target = nodes[Math.floor(Math.random() * nodes.length)];
-                ctx.beginPath();
-                ctx.moveTo(attacker.x, attacker.y);
-                ctx.lineTo(target.x, target.y);
-                ctx.strokeStyle = 'rgba(255, 0, 0, 0.5)';
-                ctx.stroke();
-            }
-            
-            nodes.forEach(node => node.draw());
-            requestAnimationFrame(animate);
-        }
-
-        // Initialize
-        window.addEventListener('resize', initAttackMap);
-        initAttackMap();
-
-        // Fake loading progress
-        let progress = 0;
-        const progressInterval = setInterval(() => {
-            progress += Math.random() * 3;
-            document.getElementById('load-progress').textContent = 
-                `${Math.min(progress, 100).toFixed(0)}%`;
-            if(progress >= 100) clearInterval(progressInterval);
-        }, 200);
     </script>
 </body>
 </html>
