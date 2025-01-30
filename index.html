@@ -3,65 +3,200 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Manjot Singh | CyberSec Analyst</title>
+    <title>CyberSec HQ</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <link rel="stylesheet" href="styles/main.css">
+    <style>
+        .matrix-bg {
+            background: rgba(0, 0, 0, 0.95);
+            position: relative;
+            overflow: hidden;
+        }
+        .scan-line {
+            position: absolute;
+            height: 2px;
+            background: linear-gradient(to bottom, transparent 0%, #0f0 50%, transparent 100%);
+            animation: scan 4s linear infinite;
+        }
+        @keyframes scan {
+            0% { top: -100%; }
+            100% { top: 100%; }
+        }
+    </style>
 </head>
-<body class="bg-gray-900 text-gray-100 font-mono">
-    <!-- Hero Section -->
-    <header class="container mx-auto px-4 py-20 text-center">
-        <h1 class="text-4xl mb-4 neon-text">Manjot Singh</h1>
-        <p class="text-xl text-green-500">// Ethical Hacker & Threat Analyst</p>
-        <div class="mt-8">
-            <a href="#contact" class="bg-green-600 hover:bg-green-700 px-6 py-3 rounded-lg">Hire Me</a>
-        </div>
-    </header>
-
-    <!-- Skills Grid -->
-    <section class="bg-gray-800 py-16">
-        <div class="container mx-auto px-4 grid md:grid-cols-3 gap-8">
-            <div class="skill-card p-6">
-                <i class="fas fa-shield-alt text-green-500 text-4xl"></i>
-                <h3 class="text-xl my-4">Threat Analysis</h3>
-                <p>MITRE ATT&CK, SIEM Tools, IDS/IPS</p>
-            </div>
-            <!-- Add 2 more skill cards -->
-        </div>
-    </section>
-
-    <!-- Projects Showcase -->
-    <section class="py-16">
-        <div class="container mx-auto px-4">
-            <h2 class="text-3xl text-center mb-12">Recent Projects</h2>
-            <div class="grid md:grid-cols-2 gap-8">
-                <div class="project-card p-6 bg-gray-800 rounded-lg">
-                    <img src="assets/images/project-screenshots/network-map.png" alt="Network Mapping Tool" class="mb-4 rounded">
-                    <h3 class="text-xl text-green-500">Automated Network Mapper</h3>
-                    <p>Python-based tool for asset discovery and vulnerability scanning.</p>
-                    <a href="#" class="text-green-500 hover:text-green-400 mt-4 inline-block">
-                        <i class="fab fa-github"></i> View Code
-                    </a>
+<body class="matrix-bg text-green-500 font-mono">
+    <!-- Terminal Interface -->
+    <div class="container mx-auto px-4 py-8">
+        <div class="terminal-window bg-black p-6 rounded-lg shadow-2xl">
+            <div class="terminal-header flex items-center mb-4">
+                <div class="flex space-x-2">
+                    <div class="w-3 h-3 rounded-full bg-red-500"></div>
+                    <div class="w-3 h-3 rounded-full bg-yellow-500"></div>
+                    <div class="w-3 h-3 rounded-full bg-green-500"></div>
                 </div>
-                <!-- Add more projects -->
+            </div>
+            <div id="terminal-output" class="h-96 overflow-y-auto mb-4">
+                <p>> Initializing CyberSec Interface...</p>
+                <p>> Loading threat database... <span id="load-progress">0%</span></p>
+            </div>
+            <div class="terminal-input flex items-center">
+                <span class="mr-2">$></span>
+                <input type="text" id="command-input" 
+                       class="flex-1 bg-transparent border-none focus:outline-none text-green-500"
+                       placeholder="Enter command (try 'help')">
             </div>
         </div>
-    </section>
+    </div>
 
-    <!-- Contact Form -->
-    <section id="contact" class="bg-gray-800 py-16">
-        <div class="container mx-auto px-4 max-w-2xl">
-            <h2 class="text-3xl text-center mb-8">Get in Touch</h2>
-            <form class="contact-form">
-                <input type="email" placeholder="your@email.com" class="w-full p-3 mb-4 bg-gray-900 rounded">
-                <textarea class="w-full p-3 mb-4 bg-gray-900 rounded" rows="5" placeholder="Describe your security needs..."></textarea>
-                <button type="submit" class="bg-green-600 hover:bg-green-700 px-8 py-3 rounded-lg w-full">
-                    Send Encrypted Message
-                </button>
-            </form>
+    <!-- Live Attack Map -->
+    <div class="container mx-auto px-4 py-8">
+        <canvas id="attack-map" class="w-full h-96 bg-black rounded-lg"></canvas>
+    </div>
+
+    <!-- Password Cracking Simulator -->
+    <div class="container mx-auto px-4 py-8">
+        <div class="bg-black p-6 rounded-lg">
+            <h2 class="text-2xl mb-4">Password Strength Tester</h2>
+            <input type="text" id="password-input" 
+                   class="w-full bg-gray-900 p-3 rounded mb-4" 
+                   placeholder="Enter password to test">
+            <div class="h-2 bg-gray-800 rounded mb-4">
+                <div id="strength-meter" class="h-2 bg-green-500 rounded transition-all"></div>
+            </div>
+            <p id="crack-time" class="text-sm">Estimated crack time: <span class="text-red-500">Instant</span></p>
         </div>
-    </section>
+    </div>
 
-    <script src="scripts/app.js"></script>
+    <script>
+        // Terminal Simulation
+        const commands = {
+            help: "Available commands: clear, scan <ip>, decrypt <hash>, ddos",
+            scan: (ip) => `Scanning ${ip}...\nPort 22: Open\nPort 80: Open\nVulnerabilities Found: 3`,
+            decrypt: (hash) => `Decrypting ${hash}...\nResult: Password123!`,
+            ddos: () => {
+                startDDoSSimulation();
+                return "Initiating DDoS simulation... Check attack map!";
+            }
+        };
+
+        document.getElementById('command-input').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                const input = e.target.value.trim().toLowerCase().split(' ');
+                const output = document.getElementById('terminal-output');
+                
+                output.innerHTML += `<p>$> ${e.target.value}</p>`;
+                
+                if (commands[input[0]]) {
+                    const response = typeof commands[input[0]] === 'function' 
+                        ? commands[input[0]](input[1])
+                        : commands[input[0]];
+                    output.innerHTML += `<p>${response}</p>`;
+                } else {
+                    output.innerHTML += `<p>Command not found. Type 'help' for options</p>`;
+                }
+                
+                e.target.value = '';
+                output.scrollTop = output.scrollHeight;
+            }
+        });
+
+        // Password Strength Calculator
+        document.getElementById('password-input').addEventListener('input', (e) => {
+            const password = e.target.value;
+            const strength = calculatePasswordStrength(password);
+            document.getElementById('strength-meter').style.width = `${strength}%`;
+            document.getElementById('crack-time').innerHTML = 
+                `Estimated crack time: <span class="text-red-500">${calculateCrackTime(password)}</span>`;
+        });
+
+        function calculatePasswordStrength(pass) {
+            const length = Math.min(pass.length * 3, 25);
+            const complexity = (/[A-Z]/.test(pass) ? 15 : 0) + 
+                             (/[0-9]/.test(pass) ? 15 : 0) + 
+                             (/[^A-Za-z0-9]/.test(pass) ? 20 : 0);
+            return Math.min(length + complexity, 100);
+        }
+
+        function calculateCrackTime(pass) {
+            const entropy = pass.length * 4;
+            const time = Math.pow(2, entropy) / (1e12 * 1000);
+            return time < 1 ? 'Instant' : `${Math.round(time)} years`;
+        }
+
+        // Attack Map Visualization
+        const canvas = document.getElementById('attack-map');
+        const ctx = canvas.getContext('2d');
+        let nodes = [];
+
+        class AttackNode {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.connections = [];
+            }
+            
+            draw() {
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, 3, 0, Math.PI * 2);
+                ctx.fillStyle = '#0f0';
+                ctx.fill();
+                
+                this.connections.forEach(target => {
+                    ctx.beginPath();
+                    ctx.moveTo(this.x, this.y);
+                    ctx.lineTo(target.x, target.y);
+                    ctx.strokeStyle = 'rgba(0, 255, 0, 0.2)';
+                    ctx.stroke();
+                });
+            }
+        }
+
+        function initAttackMap() {
+            canvas.width = canvas.offsetWidth;
+            canvas.height = canvas.offsetHeight;
+            
+            // Create network nodes
+            for(let i = 0; i < 50; i++) {
+                nodes.push(new AttackNode());
+            }
+            
+            // Create random connections
+            nodes.forEach(node => {
+                node.connections = nodes.filter(() => Math.random() > 0.95);
+            });
+            
+            animate();
+        }
+
+        function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            // Simulate attacks
+            if(Math.random() > 0.95) {
+                const attacker = nodes[Math.floor(Math.random() * nodes.length)];
+                const target = nodes[Math.floor(Math.random() * nodes.length)];
+                ctx.beginPath();
+                ctx.moveTo(attacker.x, attacker.y);
+                ctx.lineTo(target.x, target.y);
+                ctx.strokeStyle = 'rgba(255, 0, 0, 0.5)';
+                ctx.stroke();
+            }
+            
+            nodes.forEach(node => node.draw());
+            requestAnimationFrame(animate);
+        }
+
+        // Initialize
+        window.addEventListener('resize', initAttackMap);
+        initAttackMap();
+
+        // Fake loading progress
+        let progress = 0;
+        const progressInterval = setInterval(() => {
+            progress += Math.random() * 3;
+            document.getElementById('load-progress').textContent = 
+                `${Math.min(progress, 100).toFixed(0)}%`;
+            if(progress >= 100) clearInterval(progressInterval);
+        }, 200);
+    </script>
 </body>
 </html>
