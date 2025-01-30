@@ -1,224 +1,183 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <!-- Previous head content remains -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CyberSec HQ</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <style>
-        /* Add to existing styles */
-        .hacker-modal {
-            display: none;
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background: #000;
-            border: 2px solid #0f0;
-            padding: 2rem;
-            z-index: 1000;
+        /* === Core Cybersecurity Theme === */
+        :root {
+            --hacker-green: #22c55e;
+            --matrix-bg: rgba(0, 20, 0, 0.95);
+            --scan-line: linear-gradient(to bottom, transparent 0%, #0f0 50%, transparent 100%);
         }
-        
-        .data-leak {
+
+        body {
+            background: var(--matrix-bg);
+            font-family: 'Courier New', monospace;
+            color: var(--hacker-green);
+            overflow-x: hidden;
+        }
+
+        /* === Terminal Effects === */
+        .terminal-window {
+            border: 2px solid var(--hacker-green);
+            box-shadow: 0 0 15px rgba(34, 197, 94, 0.3);
+            position: relative;
+        }
+
+        .terminal-window::before {
+            content: "";
             position: absolute;
-            background: rgba(255,0,0,0.1);
-            padding: 0.5rem;
-            border: 1px dashed red;
-            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: repeating-linear-gradient(
+                0deg,
+                rgba(34, 197, 94, 0.1) 0px,
+                rgba(34, 197, 94, 0.1) 1px,
+                transparent 1px,
+                transparent 2px
+            );
+            pointer-events: none;
+        }
+
+        /* === Matrix Rain Effect === */
+        .matrix-bg {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .matrix-bg::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: repeating-linear-gradient(
+                0deg,
+                rgba(0, 255, 0, 0.05) 0px,
+                rgba(0, 255, 0, 0.05) 1px,
+                transparent 1px,
+                transparent 3px
+            );
+            animation: matrixScan 60s linear infinite;
+        }
+
+        @keyframes matrixScan {
+            from { background-position: 0 0; }
+            to { background-position: 0 100vh; }
+        }
+
+        /* === Hacker Animations === */
+        .neon-pulse {
+            animation: neonPulse 1.5s ease-in-out infinite alternate;
+        }
+
+        @keyframes neonPulse {
+            from { text-shadow: 0 0 5px var(--hacker-green); }
+            to { text-shadow: 0 0 20px var(--hacker-green); }
+        }
+
+        .glitch-text {
+            position: relative;
+            animation: glitch 3s infinite;
+        }
+
+        .glitch-text::before,
+        .glitch-text::after {
+            content: attr(data-text);
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        .glitch-text::before {
+            left: 2px;
+            text-shadow: -2px 0 #ff00c1;
+            animation: glitch-1 2s infinite linear alternate-reverse;
+        }
+
+        .glitch-text::after {
+            left: -2px;
+            text-shadow: 2px 0 #00fff9;
+            animation: glitch-2 2s infinite linear alternate-reverse;
+        }
+
+        @keyframes glitch-1 {
+            0% { clip-path: inset(20% 0 30% 0); }
+            100% { clip-path: inset(10% 0 40% 0); }
+        }
+
+        @keyframes glitch-2 {
+            0% { clip-path: inset(40% 0 10% 0); }
+            100% { clip-path: inset(30% 0 20% 0); }
+        }
+
+        /* === Interactive Elements === */
+        .hacker-button {
+            background: linear-gradient(45deg, #14532d, #22c55e);
+            border: 1px solid var(--hacker-green);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hacker-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 0 15px var(--hacker-green);
+        }
+
+        .hacker-button::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                90deg,
+                transparent,
+                rgba(255, 255, 255, 0.2),
+                transparent
+            );
+            transition: 0.5s;
+        }
+
+        .hacker-button:hover::before {
+            left: 100%;
+        }
+
+        /* === Data Leak Effects === */
+        .data-leak {
+            animation: leakPulse 2s ease-in-out infinite;
+            border: 1px solid #dc2626;
+            background: rgba(220, 38, 38, 0.1);
+        }
+
+        @keyframes leakPulse {
+            0% { box-shadow: 0 0 0 0 rgba(220, 38, 38, 0.4); }
+            70% { box-shadow: 0 0 0 10px rgba(220, 38, 38, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(220, 38, 38, 0); }
         }
     </style>
 </head>
-<body class="matrix-bg text-green-500 font-mono">
-    <!-- Add these new interactive sections -->
+<body class="matrix-bg">
+    <!-- Your existing HTML content here -->
+    
+    <!-- Add this new glitch heading -->
+    <h1 class="glitch-text text-4xl text-center my-8" data-text="CYBER_SEC_PORTFOLIO">
+        CYBER_SEC_PORTFOLIO
+    </h1>
 
-    <!-- Live Malware Analysis Sandbox -->
-    <div class="container mx-auto px-4 py-8">
-        <div class="bg-black p-6 rounded-lg">
-            <h2 class="text-2xl mb-4">Malware Analysis Sandbox</h2>
-            <div id="sandbox" class="h-64 bg-gray-900 rounded-lg relative overflow-hidden">
-                <div id="malware-file" class="data-leak" style="top: 30%; left: 20%">financial_data.xls</div>
-                <div id="registry-key" class="data-leak" style="top: 60%; left: 70%">HKLM\System</div>
-            </div>
-            <div class="mt-4 grid grid-cols-3 gap-4">
-                <button onclick="analyzeMalware()" class="bg-red-500 hover:bg-red-600 p-2 rounded">
-                    Execute Malware
-                </button>
-                <button onclick="quarantineFiles()" class="bg-yellow-500 hover:bg-yellow-600 p-2 rounded">
-                    Quarantine Files
-                </button>
-                <button onclick="dumpMemory()" class="bg-blue-500 hover:bg-blue-600 p-2 rounded">
-                    Dump Memory
-                </button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Cryptography Challenge -->
-    <div class="container mx-auto px-4 py-8">
-        <div class="bg-black p-6 rounded-lg">
-            <h2 class="text-2xl mb-4">Decrypt the Message</h2>
-            <p class="mb-4" id="ciphertext">4A61766153637269707420697320617765736F6D65</p>
-            <select id="cipher-type" class="bg-gray-900 p-2 rounded mb-4">
-                <option value="hex">Hexadecimal</option>
-                <option value="base64">Base64</option>
-                <option value="rot13">ROT13</option>
-            </select>
-            <input type="text" id="decrypted-text" 
-                   class="w-full bg-gray-900 p-3 rounded mb-4" 
-                   placeholder="Enter decrypted message">
-            <button onclick="checkDecryption()" class="bg-green-600 hover:bg-green-700 px-4 py-2 rounded">
-                Validate Decryption
-            </button>
-        </div>
-    </div>
-
-    <!-- Social Engineering Simulator -->
-    <div class="container mx-auto px-4 py-8">
-        <div class="bg-black p-6 rounded-lg">
-            <h2 class="text-2xl mb-4">Phishing Simulation</h2>
-            <div class="email-frame bg-gray-900 p-4 rounded mb-4">
-                <div class="email-header mb-4">
-                    <p>From: security@yourbank.com</p>
-                    <p>Subject: Urgent: Account Verification Required</p>
-                </div>
-                <div class="email-body">
-                    <p>Dear User,</p>
-                    <p>Click the link below to verify your account:</p>
-                    <a href="#" onclick="handlePhishingClick(event)" 
-                       class="text-blue-400 hover:text-blue-300">https://yourbank-verify.com</a>
-                </div>
-            </div>
-            <p id="phishing-result" class="text-sm"></p>
-        </div>
-    </div>
-
-    <!-- Hacker Typer Mode -->
-    <div class="hacker-modal" id="hackerModal">
-        <h3 class="text-xl mb-4">Root Access Granted</h3>
-        <div id="modal-content"></div>
-        <button onclick="closeModal()" class="mt-4 bg-red-500 hover:bg-red-600 px-4 py-2 rounded">
-            Close Connection
-        </button>
-    </div>
-
-    <script>
-        // Add these new interactive functions
-
-        // Malware Analysis Simulation
-        let isMalwareExecuted = false;
-
-        function analyzeMalware() {
-            if(!isMalwareExecuted) {
-                document.querySelectorAll('.data-leak').forEach(file => {
-                    file.style.backgroundColor = 'rgba(255,0,0,0.3)';
-                    file.innerHTML += ' 🔓';
-                });
-                showModal("Malware executed!<br>Data leaks detected in system!");
-                isMalwareExecuted = true;
-                unlockAchievement('malware-executed');
-            }
-        }
-
-        function quarantineFiles() {
-            document.querySelectorAll('.data-leak').forEach(file => {
-                file.style.backgroundColor = 'rgba(0,255,0,0.1)';
-                file.innerHTML = file.textContent.replace('🔓', '🔒');
-            });
-            showModal("Files quarantined!<br>System secured.");
-        }
-
-        // Cryptography Challenge
-        function checkDecryption() {
-            const cipherType = document.getElementById('cipher-type').value;
-            const userInput = document.getElementById('decrypted-text').value.toLowerCase();
-            let solution;
-
-            switch(cipherType) {
-                case 'hex':
-                    solution = hexToString(document.getElementById('ciphertext').textContent);
-                    break;
-                case 'base64':
-                    solution = atob("SmF2YVNjcmlwdCBpcyBhd2Vzb21l");
-                    break;
-                case 'rot13':
-                    solution = rot13("JavaScript is awesome");
-                    break;
-            }
-
-            if(userInput === solution.toLowerCase()) {
-                showModal("Decryption successful!<br>Flag: FLAG{CRYPTO_MASTER}");
-                unlockAchievement('crypto-cracked');
-            } else {
-                showModal("Decryption failed!<br>Keep trying!");
-            }
-        }
-
-        function hexToString(hex) {
-            let str = '';
-            for (let i = 0; i < hex.length; i += 2) {
-                str += String.fromCharCode(parseInt(hex.substr(i, 2), 16));
-            }
-            return str;
-        }
-
-        function rot13(str) {
-            return str.replace(/[a-zA-Z]/g, function(c) {
-                return String.fromCharCode((c <= "Z" ? 90 : 122) >= (c = c.charCodeAt(0) + 13) 
-                    ? c : c - 26);
-            });
-        }
-
-        // Phishing Simulation
-        function handlePhishingClick(e) {
-            e.preventDefault();
-            if(Math.random() > 0.5) {
-                document.getElementById('phishing-result').innerHTML = 
-                    '❌ Dangerous link clicked! Credentials compromised!';
-                showModal("Phishing successful!<br>User credentials captured!");
-                unlockAchievement('phish-clicked');
-            } else {
-                document.getElementById('phishing-result').innerHTML = 
-                    '✅ Smart choice! You avoided the phishing attempt!';
-                unlockAchievement('phish-avoided');
-            }
-        }
-
-        // Achievement System
-        const achievements = {
-            'malware-executed': { name: 'Malware Execution', badge: '🦠' },
-            'crypto-cracked': { name: 'Crypto Expert', badge: '🔐' },
-            'phish-clicked': { name: 'Phish Food', badge: '🎣' },
-            'phish-avoided': { name: 'Phish Fighter', badge: '🛡️' }
-        };
-
-        function unlockAchievement(id) {
-            const achievement = achievements[id];
-            showModal(`Achievement Unlocked: ${achievement.badge} ${achievement.name}`);
-            // Add to localStorage for persistence
-            localStorage.setItem(id, 'unlocked');
-        }
-
-        // Modal System
-        function showModal(content) {
-            document.getElementById('modal-content').innerHTML = content;
-            document.getElementById('hackerModal').style.display = 'block';
-        }
-
-        function closeModal() {
-            document.getElementById('hackerModal').style.display = 'none';
-        }
-
-        // Initialize dynamic elements
-        document.addEventListener('click', function(e) {
-            if(e.target.classList.contains('data-leak')) {
-                showModal(`Data leak accessed: ${e.target.textContent}<br>
-                         ${Math.random().toString(16).substr(2, 8)}.exe downloaded`);
-            }
-        });
-
-        // Add keyboard shortcuts
-        document.addEventListener('keydown', (e) => {
-            if(e.ctrlKey && e.key === 'l') { // Ctrl+L to clear
-                document.getElementById('terminal-output').innerHTML = '';
-            }
-        });
-    </script>
+    <!-- Update buttons with hacker-button class -->
+    <button class="hacker-button px-6 py-3 rounded-lg m-4">
+        Launch Cyber Attack
+    </button>
 </body>
 </html>
