@@ -1,131 +1,79 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Cybersecurity Expert</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cybersecurity Analyst Portfolio</title>
     <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
     <style>
-        * {
+        body {
+            font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
-            box-sizing: border-box;
+            background-color: #0d1117;
+            color: #c9d1d9;
+            overflow: hidden;
         }
-
-        body {
-            font-family: 'Courier New', monospace;
-            color: #00ff00;
-            overflow-x: hidden;
-        }
-
         #particles-js {
-            position: fixed;
+            position: absolute;
             width: 100%;
-            height: 100vh;
-            background: linear-gradient(135deg, #0a0a2e 0%, #000000 100%);
-            z-index: -1;
+            height: 100%;
+            background-color: #0d1117;
         }
-
-        .content {
+        header {
+            background-color: #161b22;
+            padding: 20px;
+            text-align: center;
             position: relative;
-            padding: 2rem;
-            max-width: 1200px;
-            margin: 0 auto;
-            background: rgba(0, 15, 30, 0.9);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(0, 255, 0, 0.2);
-            border-radius: 5px;
-            box-shadow: 0 0 20px rgba(0, 255, 0, 0.1);
+            z-index: 1;
         }
-
-        .terminal-text {
-            font-size: 1.2rem;
-            line-height: 1.6;
-            text-shadow: 0 0 8px rgba(0, 255, 0, 0.5);
+        .container {
+            width: 80%;
+            margin: auto;
+            padding: 20px;
+            position: relative;
+            z-index: 1;
         }
-
-        .experience-badge {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            padding: 10px 20px;
-            background: rgba(0, 255, 0, 0.1);
-            border: 1px solid #00ff00;
-            border-radius: 3px;
-            font-size: 0.9rem;
+        .section {
+            margin-bottom: 40px;
         }
-
-        h1 {
-            font-size: 2.5rem;
-            margin-bottom: 2rem;
-            text-transform: uppercase;
-            letter-spacing: 3px;
-            -webkit-text-stroke: 1px #00ff00;
-            color: transparent;
+        h1, h2 {
+            color: #58a6ff;
+        }
+        .contact a {
+            color: #58a6ff;
+            text-decoration: none;
         }
     </style>
 </head>
 <body>
     <div id="particles-js"></div>
-    
-    <div class="content">
-        <h1>Senior Cybersecurity Architect</h1>
-        <div class="terminal-text">
-            <p>>_ Initializing security protocol...</p>
-            <p>>_ 20 years experience verified</p>
-            <p>>_ Threat detection systems: ONLINE</p>
-            <p>>_ Network defense: ACTIVE</p>
-            <p>>_ Secure connection established</p>
-        </div>
+    <header>
+        <h1>Cybersecurity Analyst Portfolio</h1>
+    </header>
+    <div class="container">
+        <section class="section about">
+            <h2>About Me</h2>
+            <p>A passionate Cybersecurity Analyst with expertise in threat analysis, network security, and risk mitigation.</p>
+        </section>
+        <section class="section projects">
+            <h2>Projects</h2>
+            <ul>
+                <li><strong>Incident Response Simulation:</strong> Developed a mock cyber incident response plan.</li>
+                <li><strong>Penetration Testing Report:</strong> Conducted security assessments and documented vulnerabilities.</li>
+                <li><strong>Security Policy Implementation:</strong> Designed and implemented security policies for a small business.</li>
+            </ul>
+        </section>
+        <section class="section contact">
+            <h2>Contact</h2>
+            <p>Email: <a href="mailto:your.email@example.com">your.email@example.com</a></p>
+            <p>LinkedIn: <a href="#">linkedin.com/in/yourprofile</a></p>
+            <p>GitHub: <a href="#">github.com/yourgithub</a></p>
+        </section>
     </div>
-
-    <div class="experience-badge">
-        ⚙️ 20 Years Experience
-    </div>
-
     <script>
-        particlesJS('particles-js', {
-            particles: {
-                number: { value: 80, density: { enable: true, value_area: 800 } },
-                color: { value: ['#00ff00', '#0dff72', '#00b3ff', '#ffffff'] },
-                shape: {
-                    type: "image",
-                    image: {
-                        src: "https://www.freeiconspng.com/uploads/hexagon-png-28.png",
-                        width: 100,
-                        height: 100
-                    }
-                },
-                opacity: { value: 0.5, random: true },
-                size: { value: 10, random: true },
-                line_linked: {
-                    enable: true,
-                    distance: 150,
-                    color: "#00ff00",
-                    opacity: 0.2,
-                    width: 1
-                },
-                move: {
-                    enable: true,
-                    speed: 3,
-                    direction: "none",
-                    random: true,
-                    straight: false,
-                    out_mode: "out",
-                    bounce: false,
-                }
-            },
-            interactivity: {
-                detect_on: "canvas",
-                events: {
-                    onhover: { enable: true, mode: "repulse" },
-                    onclick: { enable: true, mode: "push" },
-                    resize: true
-                },
-                modes: {
-                    repulse: { distance: 100, duration: 0.4 },
-                    push: { particles_nb: 4 }
-                }
-            },
-            retina_detect: true
+        particlesJS.load('particles-js', 'scripts/particles.json', function() {
+            console.log('Particles.js loaded from scripts folder.');
         });
     </script>
 </body>
